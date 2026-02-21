@@ -1,0 +1,13 @@
+:root {
+    --white: #fafafa;
+    --black: #0d0d0d;
+    --pp: #c9b8f5;
+    --pp-light: #e8e0fc;
+    --pp-dark: #9b7fe8;
+    --pb: #b8d8f5;
+    --pb-light: #daeeff;
+    --pb-dark: #6aaed6;
+    --accent: #d4b8f5;
+    --glass: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.15);
+}

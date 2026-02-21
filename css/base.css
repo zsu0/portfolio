@@ -1,0 +1,74 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--black);
+    color: var(--white);
+    overflow-x: hidden;
+    cursor: none;
+}
+
+/* =================== MAIN PORTFOLIO =================== */
+#portfolio {
+    position: relative;
+    z-index: 10;
+    display: none;
+}
+
+#portfolio.visible {
+    display: block;
+}
+
+/* SECTIONS SHARED */
+.section {
+    min-height: 100vh;
+    padding: 8rem 5vw;
+    position: relative;
+    overflow: hidden;
+}
+
+.section-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--pp);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.section-tag::before {
+    content: '';
+    display: inline-block;
+    width: 30px;
+    height: 1px;
+    background: var(--pp);
+}
+
+.section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 5rem);
+    font-weight: 800;
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-bottom: 1.5rem;
+}
+
+/* PARTICLE CANVAS */
+#particle-canvas {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.4;
+}

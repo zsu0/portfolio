@@ -1,25 +1,908 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <title>Portfolio</title>
-  <style>
-    body {
-      background-color: black;
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    h1 {
-      color: white;
-      font-size: 3em;
-      font-family: Arial, sans-serif;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio — Bell</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Noto+Sans+JP:wght@300;400;700&family=Noto+Sans+SC:wght@300;400&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet">
+  <!-- Foundation -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+
+  <!-- Global UI -->
+  <link rel="stylesheet" href="css/cursor.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/reveal.css">
+
+  <!-- Layout -->
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/intro.css">
+  <link rel="stylesheet" href="css/footer.css">
+
+  <!-- Sections -->
+  <link rel="stylesheet" href="css/sections/profile.css">
+  <link rel="stylesheet" href="css/sections/tech.css">
+  <link rel="stylesheet" href="css/sections/art.css">
+  <link rel="stylesheet" href="css/sections/entrepreneur.css">
+  <link rel="stylesheet" href="css/sections/activities.css">
+  <link rel="stylesheet" href="css/sections/certs.css">
+
+  <!-- Components -->
+  <link rel="stylesheet" href="css/components/loading.css">
+  <link rel="stylesheet" href="css/components/marquee.css">
+  <link rel="stylesheet" href="css/components/modal.css">
+  <link rel="stylesheet" href="css/components/ui.css">
+
+  <!-- Responsive (always last) -->
+  <link rel="stylesheet" href="css/responsive.css">
 </head>
+
 <body>
-  <h1>portfolio</h1>
+
+  <!-- Loading Screen -->
+  <div id="loading">
+    <div style="font-size:2.5rem;animation:float 2s ease-in-out infinite">✦</div>
+    <div class="loading-bar-track">
+      <div class="loading-bar-fill"></div>
+    </div>
+    <div class="loading-text">Initializing...</div>
+  </div>
+
+  <!-- Cursor -->
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- Scroll Progress -->
+  <div id="scroll-progress"></div>
+
+  <!-- Particle Canvas -->
+  <canvas id="particle-canvas"></canvas>
+
+  <!-- Side Scroll Dots -->
+  <div id="scroll-indicator">
+    <div class="scroll-dot active" data-section="profile" title="Profile"></div>
+    <div class="scroll-dot" data-section="tech" title="Tech"></div>
+    <div class="scroll-dot" data-section="art" title="Art"></div>
+    <div class="scroll-dot" data-section="entrepreneur" title="Entrepreneurship"></div>
+    <div class="scroll-dot" data-section="activities" title="Activities"></div>
+    <div class="scroll-dot" data-section="certs" title="Certifications"></div>
+  </div>
+
+  <!-- Shockwave layer -->
+  <div class="shockwave" id="shockwave-layer">
+    <div class="shockwave-ring" id="shockwave-ring"></div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal-box">
+      <button class="modal-close" id="modal-close">✕</button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <!-- ===================== CINEMATIC INTRO ===================== -->
+  <div id="cinematic-intro">
+    <canvas id="intro-star-canvas"></canvas>
+    <div id="intro-grid"></div>
+
+    <div id="morph-stage">
+      <div id="morph-words-container">
+        <div class="morph-word" id="word-0" style="color:#c9b8f5">Technology</div>
+        <div class="morph-word" id="word-1" style="color:#b8d8f5">Art</div>
+        <div class="morph-word" id="word-2" style="color:#f5c8e0">Entrepreneurship</div>
+        <div class="morph-word" id="word-3" style="color:#c8f5e0">Diversity</div>
+        <div class="morph-word" id="word-4" style="color:#f5e6c8">Creativity</div>
+        <div class="morph-word" id="word-5" style="color:#e8d5ff">Culture</div>
+        <div id="portfolio-reveal-text">Portfolio ✦</div>
+      </div>
+      <div class="intro-sub-text" id="intro-sub">A universe of multidisciplinary creation</div>
+      <div class="enter-btn-wrapper" id="enter-btn-wrapper"
+        style="opacity:0;transition:opacity 0.6s ease;margin-top:0.5rem;">
+        <div class="enter-btn-pulse"></div>
+        <div class="enter-btn-pulse"></div>
+        <div class="enter-btn-pulse"></div>
+        <button class="enter-btn" id="enter-btn"><span>Enter the Universe ↗</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== PORTFOLIO ===================== -->
+  <div id="portfolio">
+
+    <!-- NAV -->
+    <nav id="nav">
+      <div class="nav-logo">✦ Bell</div>
+      <ul class="nav-links">
+        <li><a href="#profile">Profile</a></li>
+        <li><a href="#tech">Tech</a></li>
+        <li><a href="#art">Art</a></li>
+        <li><a href="#entrepreneur">Business</a></li>
+        <li><a href="#activities">Activities</a></li>
+        <li><a href="#certs">Certs</a></li>
+      </ul>
+    </nav>
+
+    <!-- ======= PROFILE ======= -->
+    <section class="section" id="profile"
+      style="min-height:100vh;display:flex;flex-direction:column;justify-content:center;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;">
+        <!-- Left: Photo -->
+        <div class="profile-left reveal-left">
+          <div class="profile-photo-wrapper">
+            <div class="photo-placeholder">
+              <div class="photo-placeholder-icon">📷</div>
+              <div>My PHOTO HERE</div>
+              <div style="font-size:0.6rem;opacity:0.5">Replace with My image</div>
+            </div>
+            <div class="profile-photo-bg"></div>
+            <div class="profile-status-badge">✦ OPEN TO OPPORTUNITIES</div>
+          </div>
+          <div class="floating-tag tag-1">🎌 Tokyo '22–'23</div>
+          <div class="floating-tag tag-2">💻 Full-Stack Dev</div>
+          <div class="floating-tag tag-3">🎨 Digital Artist</div>
+        </div>
+        <!-- Right: Info -->
+        <div class="profile-right">
+          <div class="section-tag reveal">01 — Profile</div>
+          <div class="typewriter">$ ./load_portfolio.sh — Welcome!</div>
+          <h1 class="profile-name reveal reveal-delay-1">
+            <span class="glitch" data-text="Bell">Bell</span>
+          </h1>
+          <p class="profile-name-jp reveal reveal-delay-1">
+            <span style="font-family:'Noto Sans JP'">[あなたの名前]</span> &nbsp;·&nbsp;
+            <span style="font-family:'Noto Sans SC'">你好世界</span> &nbsp;·&nbsp;
+            สวัสดีครับ
+          </p>
+          <p class="profile-bio reveal reveal-delay-2">
+            A multidisciplinary creator bridging <strong>Technology, Art, and Entrepreneurship</strong>.
+            AFS Exchange alumnus from Thailand → Japan, digital artist, web developer, game creator,
+            and self-managed online artist. Passionate about building things that are both beautiful and functional.
+          </p>
+          <div class="lang-badges stagger-children reveal-delay-3">
+            <span class="lang-badge lb-th" data-level="Native">🇹🇭 ภาษาไทย</span>
+            <span class="lang-badge lb-en" data-level="IELTS Band 7.5">🇬🇧 English</span>
+            <span class="lang-badge lb-jp" data-level="Fluent · N2">🇯🇵 日本語</span>
+            <span class="lang-badge lb-cn" data-level="Conversational">🇨🇳 中文</span>
+            <span class="lang-badge lb-es" data-level="Intermediate">🇪🇸 Español</span>
+          </div>
+          <div class="profile-ctas reveal reveal-delay-4">
+            <a href="#tech" class="btn-primary magnetic">⚡ <span>View Work</span></a>
+            <a href="#certs" class="btn-outline magnetic">📜 <span>Certifications</span></a>
+          </div>
+          <div class="stats-strip stagger-children reveal-delay-4">
+            <div class="stat-item">
+              <div class="stat-num" data-count="5">5+</div>
+              <div class="stat-label">Languages Spoken</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num" data-count="1">1yr</div>
+              <div class="stat-label">Study in Japan</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num" data-count="7">7+</div>
+              <div class="stat-label">Coding Languages</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num" data-count="20">20+</div>
+              <div class="stat-label">Projects Built</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Marquee -->
+    <div class="marquee-strip">
+      <div class="marquee-inner">
+        <span>Art</span><span class="marquee-sep">✦</span>
+        <span>Technology</span><span class="marquee-sep">✦</span>
+        <span>Entrepreneurship</span><span class="marquee-sep">✦</span>
+        <span>アート</span><span class="marquee-sep">✦</span>
+        <span>テクノロジー</span><span class="marquee-sep">✦</span>
+        <span>艺术</span><span class="marquee-sep">✦</span>
+        <span>技术</span><span class="marquee-sep">✦</span>
+        <span>ศิลปะ</span><span class="marquee-sep">✦</span>
+        <span>เทคโนโลยี</span><span class="marquee-sep">✦</span>
+        <span>Art</span><span class="marquee-sep">✦</span>
+        <span>Technology</span><span class="marquee-sep">✦</span>
+        <span>Entrepreneurship</span><span class="marquee-sep">✦</span>
+        <span>アート</span><span class="marquee-sep">✦</span>
+        <span>テクノロジー</span><span class="marquee-sep">✦</span>
+        <span>艺术</span><span class="marquee-sep">✦</span>
+        <span>技术</span><span class="marquee-sep">✦</span>
+        <span>ศิลปะ</span><span class="marquee-sep">✦</span>
+        <span>เทคโนโลยี</span><span class="marquee-sep">✦</span>
+      </div>
+    </div>
+
+    <!-- ======= TECH ======= -->
+    <section class="section" id="tech">
+      <div class="section-intro-grid">
+        <div>
+          <div class="section-tag reveal">02 — Technology</div>
+          <h2 class="section-title reveal reveal-delay-1">Built<br><span class="grad-text">from scratch.</span></h2>
+          <p class="reveal reveal-delay-2"
+            style="color:rgba(255,255,255,0.6);max-width:500px;line-height:1.8;margin-top:1rem;">
+            From low-level C to full-stack web apps and games — self-taught, competition-tested, and always building.
+          </p>
+        </div>
+        <div class="section-intro-meta reveal">
+          <div>Computing & Design</div>
+          <div>University Application</div>
+          <div style="color:var(--pp)">2024—2025</div>
+        </div>
+      </div>
+      <div class="tech-grid">
+        <!-- Card: Languages -->
+        <div class="tech-card reveal ripple-container">
+          <div class="tech-card-spotlight"></div>
+          <div class="tech-card-glow" style="background:var(--pp);top:-20%;left:-20%;"></div>
+          <span class="tech-card-icon">⚡</span>
+          <div class="tech-card-title">Programming Languages</div>
+          <div class="tech-card-sub">// CORE STACK</div>
+          <div class="skill-bar-list">
+            <div class="skill-bar-item">
+              <div class="skill-bar-label"><span>Python</span><span style="color:var(--pp)">Advanced</span></div>
+              <div class="skill-bar-track">
+                <div class="skill-bar-fill" data-w="88"></div>
+              </div>
+            </div>
+            <div class="skill-bar-item">
+              <div class="skill-bar-label"><span>JavaScript / Node.js</span><span
+                  style="color:var(--pp)">Advanced</span></div>
+              <div class="skill-bar-track">
+                <div class="skill-bar-fill" data-w="82"></div>
+              </div>
+            </div>
+            <div class="skill-bar-item">
+              <div class="skill-bar-label"><span>HTML & CSS</span><span style="color:var(--pp)">Expert</span></div>
+              <div class="skill-bar-track">
+                <div class="skill-bar-fill" data-w="92"></div>
+              </div>
+            </div>
+            <div class="skill-bar-item">
+              <div class="skill-bar-label"><span>C / C++</span><span style="color:var(--pp)">Intermediate</span></div>
+              <div class="skill-bar-track">
+                <div class="skill-bar-fill" data-w="65"></div>
+              </div>
+            </div>
+            <div class="skill-bar-item">
+              <div class="skill-bar-label"><span>C#</span><span style="color:var(--pp)">Intermediate</span></div>
+              <div class="skill-bar-track">
+                <div class="skill-bar-fill" data-w="60"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Card: Software & Tools -->
+        <div class="tech-card reveal reveal-delay-1 ripple-container">
+          <div class="tech-card-spotlight"></div>
+          <div class="tech-card-glow" style="background:var(--pb);bottom:-20%;right:-20%;"></div>
+          <span class="tech-card-icon">🛠</span>
+          <div class="tech-card-title">Software & Tools</div>
+          <div class="tech-card-sub">// DEV ENVIRONMENT</div>
+          <div class="software-tags">
+            <span class="sw-tag">Git / GitHub</span>
+            <span class="sw-tag">VS Code</span>
+            <span class="sw-tag">Godot Engine</span>
+            <span class="sw-tag">Unity</span>
+            <span class="sw-tag">Firebase</span>
+            <span class="sw-tag">MongoDB</span>
+            <span class="sw-tag">Postman</span>
+            <span class="sw-tag">Kali Linux</span>
+            <span class="sw-tag">CTF Tools</span>
+            <span class="sw-tag">Figma</span>
+            <span class="sw-tag">Docker</span>
+            <span class="sw-tag">REST APIs</span>
+          </div>
+        </div>
+        <!-- Card: Web Projects -->
+        <div class="tech-card reveal reveal-delay-2 ripple-container">
+          <div class="tech-card-spotlight"></div>
+          <div class="tech-card-glow" style="background:var(--pp-dark);top:-20%;right:-10%;"></div>
+          <span class="tech-card-icon">🌐</span>
+          <div class="tech-card-title">Web Development</div>
+          <div class="tech-card-sub">// PROJECTS</div>
+          <div class="expandable">
+            <div class="expandable-header" onclick="toggleExpand(this)">
+              <span>Solo Projects</span><span class="chevron">▾</span>
+            </div>
+            <div class="expandable-body">
+              <div style="font-size:0.82rem;color:rgba(255,255,255,0.6);line-height:1.8;">
+                <div style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);">🖼 <strong>Personal Artist
+                    Portfolio</strong> — Full-stack site with shop integration</div>
+                <div style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);">📊 <strong>Data
+                    Dashboard</strong> — Python + JS visualization app</div>
+                <div style="padding:8px 0;">🔐 <strong>Auth System</strong> — Firebase + Node.js full authentication
+                  service</div>
+              </div>
+            </div>
+          </div>
+          <div class="expandable" style="margin-top:8px;">
+            <div class="expandable-header" onclick="toggleExpand(this)">
+              <span>Team Projects</span><span class="chevron">▾</span>
+            </div>
+            <div class="expandable-body">
+              <div style="font-size:0.82rem;color:rgba(255,255,255,0.6);line-height:1.8;">
+                <div style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);">🤝 <strong>[Team Project
+                    Name]</strong> — Role: Frontend + UI Design · React, Firebase</div>
+                <div style="padding:8px 0;">💡 <strong>Hackathon Project</strong> — 24hr build, landing page + backend
+                  API</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Card: Games -->
+        <div class="tech-card reveal ripple-container">
+          <div class="tech-card-spotlight"></div>
+          <span class="tech-card-icon">🎮</span>
+          <div class="tech-card-title">Game Development</div>
+          <div class="tech-card-sub">// GODOT & UNITY</div>
+          <div class="expandable">
+            <div class="expandable-header" onclick="toggleExpand(this)">
+              <span>Original Games Created</span><span class="chevron">▾</span>
+            </div>
+            <div class="expandable-body">
+              <div style="font-size:0.82rem;color:rgba(255,255,255,0.6);line-height:1.8;">
+                <div style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);">🕹 <strong>[Game
+                    Title]</strong> — Solo · Godot · 2D platformer with original art</div>
+                <div style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);">👾 <strong>[Game
+                    Title]</strong> — Team · Unity · Puzzle RPG</div>
+                <div style="padding:8px 0;">🌟 <strong>[Game Jam Entry]</strong> — 48hr Game Jam · Theme: Connection
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Card: Competitions -->
+        <div class="tech-card reveal reveal-delay-1 ripple-container">
+          <div class="tech-card-spotlight"></div>
+          <span class="tech-card-icon">🏆</span>
+          <div class="tech-card-title">Competitions</div>
+          <div class="tech-card-sub">// PERFORMANCE</div>
+          <div class="timeline" style="margin-top:1rem;">
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-year">2024</div>
+              <div class="timeline-title">Hackathon — [Event Name]</div>
+              <div class="timeline-desc">24-hour build · Theme: AI for Social Good</div>
+              <span class="badge-result badge-gold">🥇 Finalist</span>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-year">2023</div>
+              <div class="timeline-title">CTF Competition — [Event Name]</div>
+              <div class="timeline-desc">Cybersecurity capture-the-flag · Web exploitation</div>
+              <span class="badge-result badge-silver">🥈 Participated</span>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-year">2023</div>
+              <div class="timeline-title">Programming Competition</div>
+              <div class="timeline-desc">University-level algorithm & problem solving</div>
+              <span class="badge-result badge-participated">✦ Competed</span>
+            </div>
+          </div>
+        </div>
+        <!-- Card: Self Study -->
+        <div class="tech-card reveal reveal-delay-2 ripple-container">
+          <div class="tech-card-spotlight"></div>
+          <span class="tech-card-icon">📚</span>
+          <div class="tech-card-title">Self-Study</div>
+          <div class="tech-card-sub">// CONTINUOUS LEARNING</div>
+          <div class="software-tags">
+            <span class="sw-tag" style="cursor:pointer" onclick="openModal('cip')">Code in Place · Stanford</span>
+            <span class="sw-tag">Coursera · Python</span>
+            <span class="sw-tag">Chula Mock Exam</span>
+            <span class="sw-tag">freeCodeCamp</span>
+            <span class="sw-tag">CS50x · Harvard</span>
+            <span class="sw-tag">Unity Learn</span>
+            <span class="sw-tag">Godot Docs</span>
+            <span class="sw-tag">MongoDB University</span>
+          </div>
+          <div
+            style="margin-top:1.2rem;font-size:0.78rem;color:rgba(255,255,255,0.4);font-family:'Space Mono',monospace;line-height:1.8;">
+            Self-directed learner across platforms since age 14.
+          </div>
+        </div>
+      </div>
+      <!-- Performance Bars -->
+      <div style="margin-top:4rem;">
+        <h3 class="reveal" style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:700;margin-bottom:0.5rem;">
+          Technical Proficiency Overview</h3>
+        <p class="reveal"
+          style="color:rgba(255,255,255,0.4);font-size:0.82rem;margin-bottom:2rem;font-family:'Space Mono',monospace;">
+          Self-assessed · Based on projects completed & time invested</p>
+        <div class="perf-grid">
+          <div class="perf-item reveal">
+            <div class="perf-label">🌐 Web Development <span
+                style="font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--pp)">88%</span></div>
+            <div class="perf-bar-track">
+              <div class="perf-bar-fill" data-w="88"></div>
+            </div>
+            <div class="perf-note">HTML, CSS, JS, React, Node.js</div>
+          </div>
+          <div class="perf-item reveal reveal-delay-1">
+            <div class="perf-label">🐍 Python <span
+                style="font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--pp)">85%</span></div>
+            <div class="perf-bar-track">
+              <div class="perf-bar-fill" data-w="85"></div>
+            </div>
+            <div class="perf-note">Scripting, data, Stanford Code in Place</div>
+          </div>
+          <div class="perf-item reveal reveal-delay-2">
+            <div class="perf-label">🎮 Game Dev <span
+                style="font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--pp)">70%</span></div>
+            <div class="perf-bar-track">
+              <div class="perf-bar-fill" data-w="70"></div>
+            </div>
+            <div class="perf-note">Godot (GDScript), Unity (C#)</div>
+          </div>
+          <div class="perf-item reveal reveal-delay-3">
+            <div class="perf-label">🔐 Cybersecurity <span
+                style="font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--pp)">55%</span></div>
+            <div class="perf-bar-track">
+              <div class="perf-bar-fill" data-w="55"></div>
+            </div>
+            <div class="perf-note">CTF, Kali Linux, web exploitation basics</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-sep"></div>
+
+    <!-- ======= ART ======= -->
+    <section class="section" id="art">
+      <div class="section-tag reveal">03 — Art & Design</div>
+      <h2 class="section-title reveal reveal-delay-1">Creating<br><span class="grad-text">worlds visually.</span></h2>
+      <p class="reveal reveal-delay-2"
+        style="color:rgba(255,255,255,0.6);max-width:550px;line-height:1.8;margin-top:1rem;margin-bottom:3rem;">
+        Digital art, traditional sketching, 3D modeling, and brand design — art is the language I speak natively
+        alongside code.
+      </p>
+      <div class="art-tabs reveal reveal-delay-3">
+        <button class="art-tab active" onclick="filterArt('all', this)"><span>All Works</span></button>
+        <button class="art-tab" onclick="filterArt('digital', this)"><span>Digital Art</span></button>
+        <button class="art-tab" onclick="filterArt('traditional', this)"><span>Traditional</span></button>
+        <button class="art-tab" onclick="filterArt('3d', this)"><span>3D Modeling</span></button>
+        <button class="art-tab" onclick="filterArt('brand', this)"><span>Branding</span></button>
+      </div>
+      <div class="art-gallery reveal">
+        <div class="art-cell" data-cat="digital" onclick="openModal('art1')">
+          <div class="art-placeholder"
+            style="background:linear-gradient(135deg,rgba(201,184,245,0.15),rgba(155,127,232,0.08))">
+            <div class="art-placeholder-icon">🎨</div>
+            <div>Digital Illustration Series</div>
+            <div style="font-size:0.6rem;opacity:0.4">Add My artwork</div>
+          </div>
+          <div class="art-overlay">
+            <div class="art-overlay-title">Character Design Series</div>
+            <div class="art-overlay-sub">Digital · Procreate + Photoshop</div>
+          </div>
+        </div>
+        <div class="art-cell" data-cat="traditional" onclick="openModal('art2')"
+          style="background:linear-gradient(135deg,rgba(184,216,245,0.08),rgba(106,174,214,0.05))">
+          <div class="art-placeholder">
+            <div class="art-placeholder-icon">✏️</div>
+            <div>Traditional Sketch</div>
+          </div>
+          <div class="art-overlay">
+            <div class="art-overlay-title">Figure Studies</div>
+            <div class="art-overlay-sub">Pencil · A3 Sketchbook</div>
+          </div>
+        </div>
+        <div class="art-cell" data-cat="3d" onclick="openModal('art3')"
+          style="background:linear-gradient(135deg,rgba(245,200,220,0.08),rgba(200,100,150,0.05))">
+          <div class="art-placeholder">
+            <div class="art-placeholder-icon">🧊</div>
+            <div>3D Model</div>
+          </div>
+          <div class="art-overlay">
+            <div class="art-overlay-title">3D Interior Scene</div>
+            <div class="art-overlay-sub">Blender · Environment Art</div>
+          </div>
+        </div>
+        <div class="art-cell" data-cat="digital"
+          style="background:linear-gradient(135deg,rgba(245,220,180,0.08),rgba(220,180,100,0.05))">
+          <div class="art-placeholder">
+            <div class="art-placeholder-icon">🌸</div>
+            <div>Scenery / Landscape</div>
+          </div>
+          <div class="art-overlay">
+            <div class="art-overlay-title">Landscape Collection</div>
+            <div class="art-overlay-sub">Digital · Original Concept</div>
+          </div>
+        </div>
+        <div class="art-cell" data-cat="brand" onclick="openModal('brand1')"
+          style="background:linear-gradient(135deg,rgba(200,245,220,0.08),rgba(100,200,150,0.05))">
+          <div class="art-placeholder">
+            <div class="art-placeholder-icon">✦</div>
+            <div>Logo / Brand Design</div>
+          </div>
+          <div class="art-overlay">
+            <div class="art-overlay-title">Brand Identity Work</div>
+            <div class="art-overlay-sub">Logo · Typography · System</div>
+          </div>
+        </div>
+        <div class="art-cell" data-cat="3d"
+          style="background:linear-gradient(135deg,rgba(201,184,245,0.08),rgba(155,127,232,0.05))">
+          <div class="art-placeholder">
+            <div class="art-placeholder-icon">🐾</div>
+            <div>Character / Animal 3D</div>
+          </div>
+          <div class="art-overlay">
+            <div class="art-overlay-title">Creature Modeling</div>
+            <div class="art-overlay-sub">Blender · ZBrush Concept</div>
+          </div>
+        </div>
+        <div class="art-cell" data-cat="digital"
+          style="background:linear-gradient(135deg,rgba(245,184,200,0.08),rgba(200,100,130,0.05))">
+          <div class="art-placeholder">
+            <div class="art-placeholder-icon">🏠</div>
+            <div>Interior Design Art</div>
+          </div>
+          <div class="art-overlay">
+            <div class="art-overlay-title">Interior Concept Art</div>
+            <div class="art-overlay-sub">Digital · Architecture Viz</div>
+          </div>
+        </div>
+        <div class="art-cell" data-cat="brand"
+          style="background:linear-gradient(135deg,rgba(184,216,245,0.08),rgba(106,174,214,0.05))">
+          <div class="art-placeholder">
+            <div class="art-placeholder-icon">🎭</div>
+            <div>Custom Elements</div>
+          </div>
+          <div class="art-overlay">
+            <div class="art-overlay-title">Custom Design Elements</div>
+            <div class="art-overlay-sub">Illustration · Asset Design</div>
+          </div>
+        </div>
+      </div>
+      <!-- 3D Showcase -->
+      <div style="margin-top:5rem;">
+        <h3 class="reveal" style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:700;margin-bottom:0.5rem;">
+          3D Modeling <span class="grad-text">Portfolio</span></h3>
+        <p class="reveal"
+          style="color:rgba(255,255,255,0.4);font-size:0.82rem;margin-bottom:2.5rem;font-family:'Space Mono',monospace;">
+          Blender · Environment · Characters · Products</p>
+        <div class="model-showcase">
+          <div class="model-card reveal" onclick="openModal('3d_obj')">
+            <div class="model-icon">📦</div>
+            <div class="model-title">Object Modeling</div>
+            <div class="model-desc">Hard-surface and everyday object models with realistic materials and lighting setups
+            </div>
+            <div
+              style="margin-top:1rem;font-family:'Space Mono',monospace;font-size:0.68rem;color:var(--pp);letter-spacing:1px;">
+              CLICK TO SEE MORE →</div>
+          </div>
+          <div class="model-card reveal reveal-delay-1" onclick="openModal('3d_char')">
+            <div class="model-icon">👤</div>
+            <div class="model-title">Character & Human</div>
+            <div class="model-desc">Stylized and semi-realistic human character models with rigging concepts</div>
+            <div
+              style="margin-top:1rem;font-family:'Space Mono',monospace;font-size:0.68rem;color:var(--pp);letter-spacing:1px;">
+              CLICK TO SEE MORE →</div>
+          </div>
+          <div class="model-card reveal reveal-delay-2" onclick="openModal('3d_int')">
+            <div class="model-icon">🛋</div>
+            <div class="model-title">Interior & Scene</div>
+            <div class="model-desc">Full interior environments with detailed furniture, lighting, and atmosphere</div>
+            <div
+              style="margin-top:1rem;font-family:'Space Mono',monospace;font-size:0.68rem;color:var(--pp);letter-spacing:1px;">
+              CLICK TO SEE MORE →</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-sep"></div>
+
+    <!-- ======= ENTREPRENEURSHIP ======= -->
+    <section class="section" id="entrepreneur">
+      <div class="section-tag reveal">04 — Entrepreneurship</div>
+      <h2 class="section-title reveal reveal-delay-1">Solo creator.<br><span class="grad-text">Full operation.</span>
+      </h2>
+      <div class="entrepreneur-layout">
+        <div class="reveal-flip reveal-delay-1">
+          <div class="store-mockup">
+            <div class="mockup-bar">
+              <div class="mockup-dot dot-r"></div>
+              <div class="mockup-dot dot-y"></div>
+              <div class="mockup-dot dot-g"></div>
+              <div class="mockup-url">Mystore.com ← My homepage</div>
+            </div>
+            <div class="mockup-content">
+              <div class="mockup-header-area">
+                <div class="mockup-logo-box">🎨</div>
+                <div>
+                  <div class="mockup-brand-name">[My Brand Name]</div>
+                  <div class="mockup-brand-sub">DIGITAL ART · CUSTOM DESIGN</div>
+                </div>
+              </div>
+              <div style="font-size:0.78rem;color:rgba(255,255,255,0.4);font-family:'Space Mono',monospace;">Featured
+                Works — Commission Open ✓</div>
+              <div class="mockup-items-grid">
+                <div class="mockup-item">🖼<div class="mockup-price">฿XXX</div>
+                </div>
+                <div class="mockup-item">🏷<div class="mockup-price">Custom</div>
+                </div>
+                <div class="mockup-item">✨<div class="mockup-price">฿XXX</div>
+                </div>
+                <div class="mockup-item">📱<div class="mockup-price">฿XXX</div>
+                </div>
+                <div class="mockup-item">🎭<div class="mockup-price">฿XXX</div>
+                </div>
+                <div class="mockup-item">💌<div class="mockup-price">Custom</div>
+                </div>
+              </div>
+              <div class="mockup-stats">
+                <div>
+                  <div class="mockup-stat-num">100+</div>
+                  <div class="mockup-stat-lbl">Commissions</div>
+                </div>
+                <div>
+                  <div class="mockup-stat-num">5★</div>
+                  <div class="mockup-stat-lbl">Avg Rating</div>
+                </div>
+                <div>
+                  <div class="mockup-stat-num">Solo</div>
+                  <div class="mockup-stat-lbl">Operation</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="reveal reveal-delay-2">
+          <p style="color:rgba(255,255,255,0.6);line-height:1.9;margin-bottom:2rem;">
+            Running a fully self-managed online art business since [Year] — handling everything from creating the
+            artwork to managing the storefront, handling clients, pricing, and delivery.
+          </p>
+          <div class="entrepreneur-feature">
+            <div class="feature-icon-box">🎨</div>
+            <div>
+              <div class="feature-text-title">Full Service Art Production</div>
+              <div class="feature-text-desc">Digital illustrations, custom character art, portrait commissions, sticker
+                packs, brand elements — all art created personally</div>
+            </div>
+          </div>
+          <div class="entrepreneur-feature">
+            <div class="feature-icon-box">🌐</div>
+            <div>
+              <div class="feature-text-title">Self-Built Website & Storefront</div>
+              <div class="feature-text-desc">Designed and coded own homepage from scratch — handling UI/UX, product
+                listings, contact forms, and portfolio showcase</div>
+            </div>
+          </div>
+          <div class="entrepreneur-feature">
+            <div class="feature-icon-box">📦</div>
+            <div>
+              <div class="feature-text-title">End-to-End Business Operations</div>
+              <div class="feature-text-desc">Client communication, contract management, pricing strategy, revisions
+                workflow, and delivery — fully independently managed</div>
+            </div>
+          </div>
+          <div class="entrepreneur-feature">
+            <div class="feature-icon-box">📣</div>
+            <div>
+              <div class="feature-text-title">Marketing & Social Presence</div>
+              <div class="feature-text-desc">Built organic following through consistent social media posting, community
+                engagement, and brand identity</div>
+            </div>
+          </div>
+          <div style="margin-top:2rem;">
+            <div class="expandable">
+              <div class="expandable-header" onclick="toggleExpand(this)">
+                <span>Services Offered (Click to expand)</span><span class="chevron">▾</span>
+              </div>
+              <div class="expandable-body">
+                <div class="software-tags" style="padding-top:0.5rem;">
+                  <span class="sw-tag">Portrait Commissions</span>
+                  <span class="sw-tag">Character Art</span>
+                  <span class="sw-tag">Sticker Design</span>
+                  <span class="sw-tag">Logo Design</span>
+                  <span class="sw-tag">Brand Identity</span>
+                  <span class="sw-tag">Illustration Sets</span>
+                  <span class="sw-tag">Chibi / SD Art</span>
+                  <span class="sw-tag">Print-Ready Files</span>
+                  <span class="sw-tag">NFT Art</span>
+                  <span class="sw-tag">Social Media Assets</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-sep"></div>
+
+    <!-- ======= ACTIVITIES ======= -->
+    <section class="section" id="activities">
+      <div class="section-tag reveal">05 — Activities & Life</div>
+      <h2 class="section-title reveal reveal-delay-1">Beyond the<br><span class="grad-text">screen.</span></h2>
+      <p class="reveal reveal-delay-2"
+        style="color:rgba(255,255,255,0.6);max-width:550px;line-height:1.8;margin-bottom:3rem;margin-top:1rem;">
+        Exchange student, musician, volunteer, and global citizen — connecting cultures and giving back to communities
+        across borders.
+      </p>
+      <div class="activities-bento">
+        <div class="bento-card bento-large bento-japan reveal" onclick="openModal('afs')">
+          <div class="bento-bg">🎌</div>
+          <div class="bento-icon">✈️</div>
+          <div class="bento-title" style="font-size:1.5rem;">AFS Exchange Student</div>
+          <div class="bento-desc" style="font-size:0.88rem;margin-top:0.5rem;">
+            1 full academic year studying in Japan 🇯🇵<br>
+            Participated in local parades, teaching children, academic camp volunteer, international university
+            activities.
+          </div>
+          <div style="margin-top:1rem;display:flex;flex-wrap:wrap;gap:6px;">
+            <span class="ml-chip">🎌 日本語上手</span>
+            <span class="ml-chip">🏫 School Integration</span>
+            <span class="ml-chip">🤝 Cultural Exchange</span>
+          </div>
+          <div
+            style="margin-top:0.8rem;font-family:'Space Mono',monospace;font-size:0.7rem;color:rgba(255,255,255,0.4);">
+            Click for more details ↗</div>
+        </div>
+        <div class="bento-card bento-music reveal reveal-delay-1" onclick="openModal('music')">
+          <div class="bento-bg">🎵</div>
+          <div class="bento-icon">🎹</div>
+          <div class="bento-title">Music</div>
+          <div class="instrument-chips">
+            <span class="inst-chip ic-piano">Piano</span>
+            <span class="inst-chip ic-classic">Classical Instruments</span>
+            <span class="inst-chip ic-thai">Thai Traditional</span>
+          </div>
+          <div
+            style="margin-top:0.8rem;font-family:'Space Mono',monospace;font-size:0.68rem;color:rgba(255,255,255,0.35);">
+            University ensemble · Traditional performance</div>
+        </div>
+        <div class="bento-card bento-lang reveal reveal-delay-2" onclick="openModal('langs')">
+          <div class="bento-bg">🗣</div>
+          <div class="bento-icon">🌍</div>
+          <div class="bento-title">5 Languages</div>
+          <div class="bento-desc" style="margin-top:0.5rem;">
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <div style="display:flex;gap:8px;align-items:center;"><span style="width:24px;">🇹🇭</span><span
+                  style="font-size:0.78rem;">ภาษาไทย — Native</span></div>
+              <div style="display:flex;gap:8px;align-items:center;"><span style="width:24px;">🇬🇧</span><span
+                  style="font-size:0.78rem;">English — IELTS 7.5</span></div>
+              <div style="display:flex;gap:8px;align-items:center;"><span style="width:24px;">🇯🇵</span><span
+                  style="font-size:0.78rem;">日本語 — Fluent</span></div>
+              <div style="display:flex;gap:8px;align-items:center;"><span style="width:24px;">🇨🇳</span><span
+                  style="font-size:0.78rem;">中文 — Conversational</span></div>
+              <div style="display:flex;gap:8px;align-items:center;"><span style="width:24px;">🇪🇸</span><span
+                  style="font-size:0.78rem;">Español — Intermediate</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="bento-card bento-wide bento-volunteer reveal" onclick="openModal('volunteer')">
+          <div class="bento-bg">🙏</div>
+          <div class="bento-icon">🤝</div>
+          <div class="bento-title">Volunteer Activities</div>
+          <div class="bento-desc">Buddhist community activities, school-organized volunteering, teaching & mentoring
+            children, academic support camps</div>
+          <div style="margin-top:0.8rem;display:flex;gap:8px;flex-wrap:wrap;">
+            <span class="sw-tag" style="font-size:0.65rem;">Buddhist Activities</span>
+            <span class="sw-tag" style="font-size:0.65rem;">Children's Camps</span>
+            <span class="sw-tag" style="font-size:0.65rem;">Teaching</span>
+            <span class="sw-tag" style="font-size:0.65rem;">School Events</span>
+          </div>
+        </div>
+        <div class="bento-card bento-afs reveal reveal-delay-1" onclick="openModal('intl')">
+          <div class="bento-bg">🌐</div>
+          <div class="bento-icon">🌐</div>
+          <div class="bento-title">International Activities</div>
+          <div class="bento-desc">University events on international connections and cross-cultural communication</div>
+        </div>
+        <div class="bento-card bento-volunteer2 reveal reveal-delay-2">
+          <div class="bento-bg">☸️</div>
+          <div class="bento-icon">☸️</div>
+          <div class="bento-title">Community Service</div>
+          <div class="bento-desc">Regular participant in community-based Buddhist ceremonies and merit-making activities
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-sep"></div>
+
+    <!-- ======= CERTIFICATIONS ======= -->
+    <section class="section" id="certs">
+      <div class="section-tag reveal">06 — Certifications</div>
+      <h2 class="section-title reveal reveal-delay-1">Proof of<br><span class="grad-text">dedication.</span></h2>
+      <div class="certs-grid">
+        <div class="cert-card reveal" onclick="openModal('cert_cip')">
+          <div class="cert-badge-corner" style="background:rgba(255,215,0,0.1);">🏅</div>
+          <div class="cert-logo" style="background:rgba(220,50,50,0.1);">🎓</div>
+          <div class="cert-title">Code in Place</div>
+          <div class="cert-issuer">Stanford University · Online</div>
+          <div class="cert-desc">Completed Stanford's introductory Python programming course — part of the globally
+            limited enrollment program taught by Stanford faculty.</div>
+          <div class="cert-date">📅 2023 · Certificate of Completion</div>
+        </div>
+        <div class="cert-card reveal reveal-delay-1" onclick="openModal('cert_ielts')">
+          <div class="cert-badge-corner" style="background:rgba(184,216,245,0.1);">📋</div>
+          <div class="cert-logo" style="background:rgba(106,174,214,0.1);">🌐</div>
+          <div class="cert-title">IELTS Academic</div>
+          <div class="cert-issuer">British Council / IDP · International</div>
+          <div class="cert-desc">Overall Band Score 7.5 — demonstrating high English proficiency across Reading,
+            Writing, Listening, and Speaking.</div>
+          <div class="cert-date">📅 [Year] · Band 7.5 Overall</div>
+        </div>
+        <div class="cert-card reveal reveal-delay-2" onclick="openModal('cert_afs')">
+          <div class="cert-badge-corner" style="background:rgba(255,200,220,0.1);">🌸</div>
+          <div class="cert-logo" style="background:rgba(255,180,200,0.1);">✈️</div>
+          <div class="cert-title">AFS Exchange Certificate</div>
+          <div class="cert-issuer">AFS Intercultural Programs · Japan</div>
+          <div class="cert-desc">1 full academic year in Japan — certified completion of AFS intercultural exchange
+            program including academic study and community participation.</div>
+          <div class="cert-date">📅 2022–2023 · Academic Year</div>
+        </div>
+        <div class="cert-card reveal" onclick="openModal('cert_coursera')">
+          <div class="cert-badge-corner" style="background:rgba(201,184,245,0.1);">📜</div>
+          <div class="cert-logo" style="background:rgba(155,127,232,0.1);">💻</div>
+          <div class="cert-title">Python for Everybody</div>
+          <div class="cert-issuer">Coursera · University of Michigan</div>
+          <div class="cert-desc">Completed the Python programming specialization covering data structures, web access,
+            and database usage with Python.</div>
+          <div class="cert-date">📅 [Year] · Specialization Certificate</div>
+        </div>
+        <div class="cert-card reveal reveal-delay-1">
+          <div class="cert-badge-corner" style="background:rgba(200,245,220,0.1);">🎮</div>
+          <div class="cert-logo" style="background:rgba(100,200,150,0.1);">🕹</div>
+          <div class="cert-title">Game Development Certificate</div>
+          <div class="cert-issuer">[Platform] · Unity / Godot Learn</div>
+          <div class="cert-desc">Completed official game development learning paths, covering scripting, physics, UI,
+            and game design principles.</div>
+          <div class="cert-date">📅 [Year] · Completion Badge</div>
+        </div>
+        <div class="cert-card reveal reveal-delay-2" onclick="openModal('cert_chula')">
+          <div class="cert-badge-corner" style="background:rgba(245,230,180,0.1);">🏛</div>
+          <div class="cert-logo" style="background:rgba(220,180,100,0.1);">📚</div>
+          <div class="cert-title">Chula Mock Exam</div>
+          <div class="cert-issuer">Chulalongkorn University · Thailand</div>
+          <div class="cert-desc">Participated in Chulalongkorn University entrance mock examination — academic
+            preparation and performance benchmark for university admission.</div>
+          <div class="cert-date">📅 [Year] · Participation Record</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-name reveal">Bell</div>
+      <div class="footer-quote reveal">"Creating at the intersection of art, technology, and culture."</div>
+      <div class="footer-quote-jp reveal">
+        アート、テクノロジー、文化の交差点で創造する。<br>
+        <span style="font-family:'Noto Sans SC'">在艺术、技术与文化的交汇处创造。</span>
+      </div>
+      <div class="footer-links reveal">
+        <a href="mailto:Myemail@example.com" class="footer-link">Email</a>
+        <a href="#" class="footer-link">GitHub</a>
+        <a href="#" class="footer-link">Instagram</a>
+        <a href="#" class="footer-link">LinkedIn</a>
+        <a href="#" class="footer-link">Store</a>
+      </div>
+      <div class="footer-copy">© 2025 Bell · Built with code & art · All rights reserved</div>
+    </footer>
+  </div><!-- end #portfolio -->
+
+  <!-- ===================== SCRIPTS ===================== -->
+  <script src="js/data/modals.js"></script>
+  <script src="js/modal.js"></script>
+  <script src="js/intro.js"></script>
+  <script src="js/cursor.js"></script>
+  <script src="js/scroll.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/interactions.js"></script>
+  <script src="js/effects.js"></script>
+  <script src="js/main.js"></script>
 </body>
+
 </html>

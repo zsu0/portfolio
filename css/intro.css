@@ -1,0 +1,222 @@
+/* ===================== CINEMATIC INTRO ===================== */
+#cinematic-intro {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 1000;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#cinematic-intro.fade-out {
+    animation: cinematicFadeOut 1.2s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+}
+
+/* Star canvas in intro */
+#intro-star-canvas {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+/* Falling keyword words */
+.falling-word {
+    position: absolute;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    pointer-events: none;
+    opacity: 0;
+    user-select: none;
+    white-space: nowrap;
+}
+
+/* Center stage for morphing text */
+#morph-stage {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    text-align: center;
+}
+
+#morph-words-container {
+    position: relative;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+}
+
+.morph-word {
+    position: absolute;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    letter-spacing: -2px;
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+    text-shadow: 0 0 60px currentColor;
+}
+
+.morph-word.active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.morph-word.exit {
+    opacity: 0;
+    transform: translateY(-30px) scale(1.05);
+}
+
+#portfolio-reveal-text {
+    position: absolute;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(3rem, 8vw, 7rem);
+    letter-spacing: -4px;
+    opacity: 0;
+    background: linear-gradient(135deg, var(--pp), var(--pb), #fff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transform: scale(0.6);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+    text-shadow: none;
+}
+
+#portfolio-reveal-text.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.enter-btn {
+    padding: 18px 52px;
+    background: transparent;
+    border: 1px solid rgba(201, 184, 245, 0.5);
+    border-radius: 60px;
+    color: white;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.enter-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--pp-dark), var(--pb-dark));
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+
+.enter-btn:hover::before {
+    opacity: 1;
+}
+
+.enter-btn:hover {
+    border-color: transparent;
+    transform: translateY(18px) scale(1.04);
+    box-shadow: 0 20px 60px rgba(155, 127, 232, 0.4);
+}
+
+.enter-btn span {
+    position: relative;
+    z-index: 1;
+}
+
+.enter-btn.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Pulsing ring behind enter button */
+.enter-btn-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.enter-btn-pulse {
+    position: absolute;
+    inset: -12px;
+    border: 1px solid rgba(201, 184, 245, 0.25);
+    border-radius: 60px;
+    opacity: 0;
+    animation: btnPulseRing 2.5s ease-out infinite;
+    pointer-events: none;
+}
+
+.enter-btn-pulse:nth-child(2) {
+    animation-delay: 0.8s;
+}
+
+.enter-btn-pulse:nth-child(3) {
+    animation-delay: 1.6s;
+}
+
+/* Intro grid overlay for depth */
+#intro-grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.04;
+    background-image:
+        linear-gradient(rgba(201, 184, 245, 1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201, 184, 245, 1) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gridShift 20s linear infinite;
+}
+
+.intro-sub-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 5px;
+    color: rgba(255, 255, 255, 0.35);
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+
+.intro-sub-text.show {
+    opacity: 1;
+}
+
+/* Shockwave ring on enter */
+.shockwave {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shockwave-ring {
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--pp);
+    border-radius: 50%;
+    opacity: 0;
+}
+
+.shockwave-ring.fire {
+    animation: shockwaveExpand 0.8s cubic-bezier(0, 0, 0.2, 1) forwards;
+}

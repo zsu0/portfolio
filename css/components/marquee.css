@@ -1,0 +1,46 @@
+/* =================== MARQUEE =================== */
+.marquee-strip {
+    background: var(--pp-dark);
+    padding: 14px 0;
+    overflow: hidden;
+    position: relative;
+    z-index: 10;
+}
+
+.marquee-inner {
+    display: flex;
+    white-space: nowrap;
+    animation: marquee 20s linear infinite;
+}
+
+.marquee-inner span {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--black);
+    padding: 0 2rem;
+}
+
+.marquee-sep {
+    color: var(--black) !important;
+    opacity: 0.4;
+}
+
+/* HORIZONTAL SCROLL RIBBON */
+.h-scroll-ribbon {
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 1rem 0;
+    position: relative;
+}
+
+.h-scroll-track {
+    display: inline-flex;
+    gap: 1rem;
+    animation: hscroll 30s linear infinite;
+}
+
+.h-scroll-track:hover {
+    animation-play-state: paused;
+}
