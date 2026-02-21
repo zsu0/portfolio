@@ -23,7 +23,6 @@
 
 .tech-card::before {
     content: '';
-    position: absolute;
     inset: 0;
     background: linear-gradient(135deg, rgba(201, 184, 245, 0.05), rgba(184, 216, 245, 0.05));
     opacity: 0;
