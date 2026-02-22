@@ -1,0 +1,407 @@
+/* ============================================================
+   folder-widget.css
+   วาง <link rel="stylesheet" href="folder-widget.css"> ใน <head>
+   ทุก style ถูก scope ด้วย #folder-section เพื่อไม่ชนเว็บเดิม
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap');
+
+/* ── Variables ── */
+#folder-section {
+  --fw-yellow: #F5C842;
+  --fw-dark:   #D4A017;
+  --fw-bg:     #0f0e17;
+  --fw-glass:  rgba(255,255,255,0.08);
+  --fw-border: rgba(255,255,255,0.22);
+}
+
+/* ── Section wrapper ──
+   ❌ ห้ามมี overflow:hidden — จะทำให้ sticky พัง
+*/
+#folder-section {
+  position: relative;
+  width: 100%;
+  background: var(--fw-bg);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ── Scroll driver ── */
+#fw-driver {
+  height: 600vh;
+  position: relative;
+}
+
+/* Background ambient glow (sticky ตาม viewport) */
+#fw-driver::before {
+  content: '';
+  position: sticky;
+  top: 0;
+  display: block;
+  height: 100vh;
+  margin-bottom: -100vh;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 60%, rgba(245,200,66,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 20% 20%, rgba(100,80,200,0.06) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Sticky stage ── */
+#fw-stage {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  z-index: 1;
+}
+
+/* ── Folder wrap (perspective container) ── */
+#fw-folder-wrap {
+  position: relative;
+  width: 320px;
+  height: 260px;
+  transform-style: preserve-3d;
+  perspective: 900px;
+   transform: scale(1.75); 
+}
+
+/* ── Folder ── */
+#fw-folder {
+  position: relative;
+  width: 320px;
+  height: 260px;
+  transform-style: preserve-3d;
+  transform-origin: center center;
+}
+
+/* Folder back */
+#fw-folder-back {
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 320px; height: 230px;
+  background: linear-gradient(160deg, #F5C842 60%, #D4A017 100%);
+  border-radius: 8px 8px 10px 10px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5),
+  inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+/* Folder tab */
+#fw-folder-tab {
+  position: absolute;
+  top: 0; left: 12px;
+  width: 90px; height: 34px;
+  background: linear-gradient(135deg, #F5C842, #E8B820);
+  border-radius: 8px 16px 0 0;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+/* Folder front cover */
+#fw-folder-front {
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 320px; height: 230px;
+  background: linear-gradient(170deg, #F7D060 0%, #E8B820 100%);
+  border-radius: 8px 8px 10px 10px;
+  transform-origin: bottom center;
+  transform: rotateX(0deg);
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.15),
+              0 10px 30px rgba(0,0,0,0.3);
+  overflow: hidden;
+}
+
+#fw-folder-front::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255,255,255,0) 0px,
+    rgba(255,255,255,0) 28px,
+    rgba(255,255,255,0.05) 29px,
+    rgba(255,255,255,0) 30px
+  );
+  pointer-events: none;
+}
+
+/* ── Cartoon face ── */
+#fw-face {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  transition: opacity 0.3s;
+}
+
+#fw-face .fw-eyes {
+  display: flex;
+  gap: 24px;
+}
+
+#fw-face .fw-eye {
+  width: 18px; height: 22px;
+  background: #7A5200;
+  border-radius: 50%;
+  position: relative;
+}
+
+#fw-face .fw-eye::after {
+  content: '';
+  position: absolute;
+  top: 3px; left: 4px;
+  width: 6px; height: 6px;
+  background: #fff;
+  border-radius: 50%;
+}
+
+#fw-face .fw-smile {
+  width: 40px; height: 22px;
+  border: 4px solid #7A5200;
+  border-top: none;
+  border-radius: 0 0 40px 40px;
+}
+
+/* ── Slides wrap ── */
+#fw-slides-wrap {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+/* ── Individual slide ── */
+#folder-section .fw-slide {
+  position: absolute;
+  width: 280px; height: 190px;
+  transform-origin: center center;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  pointer-events: all;
+  margin: 0; padding: 0;
+}
+
+#folder-section .fw-slide-inner {
+  width: 100%; height: 100%;
+  background: var(--fw-glass);
+  border: 1px solid var(--fw-border);
+  border-radius: 14px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 24px 28px;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.25),
+    inset 0 -1px 0 rgba(255,255,255,0.05);
+  box-sizing: border-box;
+}
+
+/* Glass shimmer */
+#folder-section .fw-slide-inner::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -60%;
+  width: 40%; height: 100%;
+  background: linear-gradient(105deg, transparent, rgba(255,255,255,0.12), transparent);
+  transform: skewX(-15deg);
+  pointer-events: none;
+}
+
+#folder-section .fw-slide-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 8px;
+}
+
+#folder-section .fw-slide-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px; font-weight: 800;
+  line-height: 1.2; color: #fff;
+  margin-bottom: 10px;
+}
+
+#folder-section .fw-slide-body {
+  font-size: 13px; line-height: 1.6;
+  color: rgba(255,255,255,0.65);
+}
+
+#folder-section .fw-slide-accent {
+  position: absolute;
+  bottom: 18px; right: 22px;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  opacity: 0.7;
+  font-size: 22px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ── Scroll hint ── */
+#fw-hint {
+  position: absolute;
+  bottom: 36px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column;
+  align-items: center; gap: 8px;
+  opacity: 1; transition: opacity 0.5s;
+  pointer-events: none; z-index: 100;
+}
+
+#fw-hint span {
+  font-family: 'Syne', sans-serif;
+  font-size: 11px; letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+}
+
+#fw-hint .fw-arrow {
+  width: 22px; height: 22px;
+  border-right: 2px solid rgba(255,255,255,0.25);
+  border-bottom: 2px solid rgba(255,255,255,0.25);
+  transform: rotate(45deg);
+  animation: fw-bounce 1.4s ease-in-out infinite;
+}
+
+@keyframes fw-bounce {
+  0%,100% { transform: rotate(45deg) translateY(0); }
+  50%      { transform: rotate(45deg) translateY(5px); }
+}
+
+/* ── Slide popup overlay ── */
+#fw-popup {
+  position: fixed;
+  inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0; transition: opacity 0.4s;
+}
+
+#fw-popup.active {
+  opacity: 1; pointer-events: all;
+}
+
+#fw-popup-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* Layout 2 คอลัมน์ */
+#fw-popup-content {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+}
+
+/* ฝั่งรูป */
+#fw-popup-pic {
+  width: 160px;
+  min-height: 160px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.2);
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* รูปจริง */
+#fw-popup-pic img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ฝั่งข้อความ */
+#fw-popup-text {
+  flex: 1;
+}
+
+#fw-popup-pic img {
+  animation: fw-fadeIn 0.6s ease forwards;
+  opacity: 0;
+}
+
+@keyframes fw-fadeIn {
+  to { opacity: 1; }
+}
+
+#fw-popup-card {
+  position: relative; z-index: 1;
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.28);
+  border-radius: 20px;
+  padding: 36px 40px;
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6),
+              inset 0 1px 0 rgba(255,255,255,0.3);
+  transform: scale(0.9);
+  transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  box-sizing: border-box;
+}
+
+#fw-popup.active #fw-popup-card {
+  transform: scale(1.5);
+}
+
+#fw-popup-close {
+  position: absolute; top: 16px; right: 20px;
+  background: none; border: none;
+  color: rgba(255,255,255,0.5);
+  font-size: 22px; cursor: pointer;
+  transition: color 0.2s; font-family: sans-serif;
+}
+#fw-popup-close:hover { color: #fff; }
+
+#fw-popup-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(255,255,255,0.4); margin-bottom: 8px;
+}
+#fw-popup-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px; font-weight: 800;
+  line-height: 1.2; color: #fff; margin-bottom: 12px;
+}
+#fw-popup-body {
+  font-size: 14px; line-height: 1.7;
+  color: rgba(255,255,255,0.65);
+}
+
+/* ── Progress dots ── */
+#fw-dots {
+  position: absolute;
+  right: 28px; top: 50%;
+  transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 8px;
+  z-index: 50; opacity: 0; transition: opacity 0.4s;
+  opacity: 0;
+}
+
+#fw-dots.visible { opacity: 1; }
+
+#fw-dots .fw-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  transition: background 0.3s, transform 0.3s;
+  cursor: pointer;
+}
+#fw-dots .fw-dot.active {
+  background: #F5C842;
+  transform: scale(1.5);
+}

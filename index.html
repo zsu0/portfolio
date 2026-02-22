@@ -36,6 +36,9 @@
   <link rel="stylesheet" href="css/components/modal.css">
   <link rel="stylesheet" href="css/components/ui.css">
 
+
+  <link rel="stylesheet" href="css/folder-widget.css">
+
   <!-- Responsive (always last) -->
   <link rel="stylesheet" href="css/responsive.css">
 </head>
@@ -869,6 +872,66 @@
       </div>
     </section>
 
+
+
+    <!-- ===== FOLDER WIDGET ===== -->
+    <section id="folder-section">
+      <div id="fw-driver">
+        <div id="fw-stage">
+
+          <!-- Folder -->
+          <div id="fw-folder-wrap">
+            <div id="fw-folder">
+              <div id="fw-folder-back"></div>
+              <div id="fw-folder-tab"></div>
+
+              <!-- JS จะสร้าง slides อัตโนมัติจาก SLIDES array -->
+              <div id="fw-slides-wrap"></div>
+
+              <div id="fw-folder-front">
+                <div id="fw-face">
+                  <div class="fw-eyes">
+                    <div class="fw-eye"></div>
+                    <div class="fw-eye"></div>
+                  </div>
+                  <div class="fw-smile"></div>
+                </div>
+              </div>
+
+            </div> <!-- /fw-folder -->
+          </div> <!-- /fw-folder-wrap -->
+
+          <!-- UI elements -->
+          <div id="fw-hint">
+            <span>Scroll to explore</span>
+            <div class="fw-arrow"></div>
+          </div>
+          <div id="fw-dots"></div>
+
+        </div> <!-- /fw-stage -->
+      </div> <!-- /fw-driver -->
+    </section>
+
+    <!-- Popup overlay (วางนอก section ก็ได้ เพราะเป็น fixed) -->
+    <div id="fw-popup">
+      <div id="fw-popup-backdrop"></div>
+      <div id="fw-popup-card">
+        <button id="fw-popup-close">✕</button>
+
+        <div id="fw-popup-content">
+          <div id="fw-popup-pic"></div>
+
+          <div id="fw-popup-text">
+            <div id="fw-popup-label"></div>
+            <div id="fw-popup-title"></div>
+            <div id="fw-popup-body"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ===== END FOLDER WIDGET ===== -->
+
+
     <!-- FOOTER -->
     <footer>
       <div class="footer-name reveal">Bell</div>
@@ -890,6 +953,9 @@
 
   <!-- ===================== SCRIPTS ===================== -->
   <script src="js/data/modals.js"></script>
+
+  <script src="js/folder-widget.js"></script>
+
   <script src="js/modal.js"></script>
   <script src="js/intro.js"></script>
   <script src="js/cursor.js"></script>
